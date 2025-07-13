@@ -298,7 +298,7 @@ const STYLES = [{
 	name: "musisi_grunge_90-an",
 	prompt: "Ubah karakter menjadi Musisi Grunge era 90-an, dengan gaya acak-acakan dan anti-mode. **Pilihan:** --pakaian: kemeja flanel kebesaran, celana jin robek, kaus band, sepatu bot tempur, --gaya rambut: panjang, tidak terawat, sering diwarnai atau berantakan, --aksesori: beanie, gitar usang (opsional), --ekspresi: murung, apatis, --estetika: mentah, autentik, dan tidak terpoles. **Pertahankan:** wajah, ekspresi, pose, dan latar belakang asli tetap utuh, memastikan modifikasi terintegrasi dengan mulus dengan pencahayaan dan realisme gambar asli. --lingkup modifikasi: hanya memodifikasi ke estetika Musisi Grunge era 90-an."
 }, {
-	name: "putri duyung_pria"
+	name: "putri duyung_pria",
 	prompt: "Ubah karakter menjadi Putri Duyung atau Duyung yang agung, dengan bagian bawah tubuh akuatik yang indah. **Pilihan:** --ekor: sisik berwarna-warni dan detail dengan warna laut yang cerah, --rambut: panjang, tergerai, seringkali dengan efek basah atau dihiasi kerang, --atasan: bra kerang atau hiasan dada bertema akuatik, --aksesori: cahaya bioluminesensi yang halus, perhiasan mutiara, --lingkungan: menyiratkan bawah air atau di atas batu karang di tepi laut. **Pertahankan:** wajah, ekspresi, pose (tubuh bagian atas), dan latar belakang asli tetap utuh, memastikan modifikasi terintegrasi dengan mulus dengan pencahayaan dan realisme gambar asli. --lingkup modifikasi: hanya mengubah tubuh bagian bawah dan menambahkan detail akuatik."
 }, {
 	name: "vampire_classic",
