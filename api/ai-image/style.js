@@ -1,6 +1,6 @@
 const fs = require("fs");
 const {
-  GoogleGenerativeAI: GenerativeModel
+	GoogleGenerativeAI: GenerativeModel
 } = require("@google/generative-ai");
 const axios = require("axios");
 const STYLES = [{
@@ -52,7 +52,7 @@ const STYLES = [{
 	name: "goth_elegant",
 	prompt: "Modifikasi karakter menjadi karakter gothic yang elegan, dengan kulit porselen pucat. **Pilihan:** --riasan: gelap dramatis (lipstik merah tua, mata smoky), --pakaian: gelap elegan dengan pengaruh Victoria, --aksesori: gothic yang elegan (kalung choker berhias, detail renda, perhiasan perak), --elemen: romantis gelap, --palet warna: gothic klasik (hitam pekat, ungu tua, aksen perak). **Pertahankan:** pose, ekspresi, dan latar belakang asli tetap utuh, memastikan modifikasi terintegrasi mulus dengan pencahayaan dan realisme gambar asli. --lingkup modifikasi: hanya memodifikasi gaya menjadi estetika gothic yang elegan."
 }, {
-	samurai,
+	name: "samurai",
 	prompt: "Modifikasi karakter menjadi samurai Jepang tradisional, dengan elemen autentik. **Pilihan:** --gaya rambut: sanggul tradisional (chonmage), --zirah: lamelar detail dengan lapisan yang tepat, --senjata: pedang katana seremonial, --tanda wajah: tradisional, --elemen budaya: Jepang autentik (motif bunga sakura, pola tradisional), --warna: sesuai periode (biru tua, merah, emas, dan hitam), --ekspresi: prajurit yang tegas, --sikap: samurai tradisional. **Pertahankan:** pose dan latar belakang asli tetap utuh, pastikan modifikasi terintegrasi dengan mulus dengan pencahayaan dan realisme gambar asli. --lingkup modifikasi: hanya memodifikasi ke penampilan prajurit samurai autentik."
 }, {
 	name: "space_marine",
@@ -788,65 +788,65 @@ const STYLES = [{
 	prompt: "Terapkan Efek Sketsa Digital pada karakter, membuatnya tampak seperti gambar digital kasar yang energik. **Pilihan:** --garis: longgar, ekspresif, dengan ketebalan bervariasi, --warna: monokromatik (misalnya, hitam di atas putih) atau redup, dengan sentuhan warna halus, --tekstur: nuansa pensil digital atau arang, --nuansa: artistik, mentah, langsung, seperti draf. **Pertahankan:** pose dan bentuk umum asli, pastikan modifikasi tersebut mengubah gaya rendering. --lingkup modifikasi: hanya menerapkan efek sketsa digital."
 }];
 module.exports = {
-  name: "ImageTransformer",
-  desc: "Ubah karakter dengan berbagai gaya AI",
-  category: "AI Image",
-  params: ["url", "style"],
-  async run(req, res) {
-    const {
-      url: imageUrl,
-      style: requestedStyle
-    } = req.query;
-    if (!imageUrl) {
-      return res.status(400).json({
-        status: false,
-        error: "Parameter url wajib diisi!"
-      });
-    }
-    const selectedStyle = STYLES.find(s => s.name.toLowerCase() === (requestedStyle || "hijab").toLowerCase());
-    if (!selectedStyle) {
-      return res.status(400).json({
-        status: false,
-        error: `Gaya '${requestedStyle}' tidak ditemukan. Gaya yang tersedia: ${STYLES.map(s => s.name).join(", ")}`
-      });
-    }
-    try {
-      const imageResponse = await axios.get(imageUrl, {
-        responseType: "arraybuffer"
-      });
-      const imageBuffer = Buffer.from(imageResponse.data);
-      const contentType = imageResponse.headers["content-type"];
-      const API_KEYS = ["AIzaSyDnBPd_EhBfr73NssnThVQZYiKZVhGZewU", "AIzaSyA94OZD-0V4quRbzPb2j75AuzSblPHE75M", "AIzaSyB5aTYbUg2VQ0oXr5hdJPN8AyLJcmM84-A", "AIzaSyB1xYZ2YImnBdi2Bh-If_8lj6rvSkabqlA", "AIzaSyB9DzI2olokERvU_oH0ASSO2OKRahleC7U", "AIzaSyDsyj9oOFJK_-bWQFLIR4yY4gpLvq43jd4", "AIzaSyDpqC3y2ZZNlU9O93do36_uijl1HIJ-XKw", "AIzaSyCwO0UWohpAKGu32A0YYJaxpbj5lVInjss"];
-      const randomApiKey = API_KEYS[Math.floor(Math.random() * API_KEYS.length)];
-      const genAI = new GenerativeModel(randomApiKey);
-      const modelConfig = {
-        model: "gemini-2.0-flash-exp-image-generation",
-        generationConfig: {}
-      };
-      modelConfig.generationConfig.responseModalities = ["Text", "Image"];
-      const promptContent = {
-        text: selectedStyle.prompt
-      };
-      const result = await genAI.getGenerativeModel(modelConfig).generateContent([{
-        inlineData: {
-          mimeType: contentType,
-          data: imageBuffer.toString("base64")
-        }
-      }, promptContent]);
-      const imagePart = result.response.candidates[0].content.parts.find(part => part.inlineData);
-      if (!imagePart) {
-        throw new Error("Gagal mendapatkan gambar hasil.");
-      }
-      const outputImageBuffer = Buffer.from(imagePart.inlineData.data, "base64");
-      res.setHeader("Content-Type", "image/png");
-      res.end(outputImageBuffer);
-    } catch (error) {
-      console.error(error);
-      const errorResponse = {
-        status: false,
-        error: error.message
-      };
-      res.status(500).json(errorResponse);
-    }
-  }
+	name: "ImageTransformer",
+	desc: "Ubah karakter dengan berbagai gaya AI",
+	category: "AI Image",
+	params: ["url", "style"],
+	async run(req, res) {
+		const {
+			url: imageUrl,
+			style: requestedStyle
+		} = req.query;
+		if (!imageUrl) {
+			return res.status(400).json({
+				status: false,
+				error: "Parameter url wajib diisi!"
+			});
+		}
+		const selectedStyle = STYLES.find(s => s.name.toLowerCase() === (requestedStyle || "hijab").toLowerCase());
+		if (!selectedStyle) {
+			return res.status(400).json({
+				status: false,
+				error: `Gaya '${requestedStyle}' tidak ditemukan. Gaya yang tersedia: ${STYLES.map(s => s.name).join(", ")}`
+			});
+		}
+		try {
+			const imageResponse = await axios.get(imageUrl, {
+				responseType: "arraybuffer"
+			});
+			const imageBuffer = Buffer.from(imageResponse.data);
+			const contentType = imageResponse.headers["content-type"];
+			const API_KEYS = ["AIzaSyDnBPd_EhBfr73NssnThVQZYiKZVhGZewU", "AIzaSyA94OZD-0V4quRbzPb2j75AuzSblPHE75M", "AIzaSyB5aTYbUg2VQ0oXr5hdJPN8AyLJcmM84-A", "AIzaSyB1xYZ2YImnBdi2Bh-If_8lj6rvSkabqlA", "AIzaSyB9DzI2olokERvU_oH0ASSO2OKRahleC7U", "AIzaSyDsyj9oOFJK_-bWQFLIR4yY4gpLvq43jd4", "AIzaSyDpqC3y2ZZNlU9O93do36_uijl1HIJ-XKw", "AIzaSyCwO0UWohpAKGu32A0YYJaxpbj5lVInjss"];
+			const randomApiKey = API_KEYS[Math.floor(Math.random() * API_KEYS.length)];
+			const genAI = new GenerativeModel(randomApiKey);
+			const modelConfig = {
+				model: "gemini-2.0-flash-exp-image-generation",
+				generationConfig: {}
+			};
+			modelConfig.generationConfig.responseModalities = ["Text", "Image"];
+			const promptContent = {
+				text: selectedStyle.prompt
+			};
+			const result = await genAI.getGenerativeModel(modelConfig).generateContent([{
+				inlineData: {
+					mimeType: contentType,
+					data: imageBuffer.toString("base64")
+				}
+			}, promptContent]);
+			const imagePart = result.response.candidates[0].content.parts.find(part => part.inlineData);
+			if (!imagePart) {
+				throw new Error("Gagal mendapatkan gambar hasil.");
+			}
+			const outputImageBuffer = Buffer.from(imagePart.inlineData.data, "base64");
+			res.setHeader("Content-Type", "image/png");
+			res.end(outputImageBuffer);
+		} catch (error) {
+			console.error(error);
+			const errorResponse = {
+				status: false,
+				error: error.message
+			};
+			res.status(500).json(errorResponse);
+		}
+	}
 };
