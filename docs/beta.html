@@ -32,6 +32,7 @@
     html.light {
       --bg-color: var(--background-light);
       --text-color: var(--text-light);
+      --text-color-muted: #718096;
       --card-bg: var(--card-bg-light);
       --border-color: var(--border-light);
       --primary-color: var(--primary-light);
@@ -41,6 +42,7 @@
     html.dark {
       --bg-color: var(--background-dark);
       --text-color: var(--text-dark);
+      --text-color-muted: #a0aec0;
       --card-bg: var(--card-bg-dark);
       --border-color: var(--border-dark);
       --primary-color: var(--primary-dark);
@@ -86,7 +88,7 @@
       background-color: var(--card-bg);
       border: 1px solid var(--border-color);
       border-radius: 1rem;
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
       transition: all 0.3s;
     }
 
@@ -129,8 +131,9 @@
         border: 1px solid var(--border-color);
     }
      .api-item:hover {
-        border-left-color: var(--primary-color);
-        transform: translateX(2px);
+        border-color: var(--primary-color);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     }
     
     .modal-content {
@@ -141,6 +144,35 @@
     .response-pre {
         background-color: var(--bg-color);
         border: 1px solid var(--border-color);
+    }
+
+    /* Styles for Category Navigation */
+    .category-tag {
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+        font-weight: 600;
+        border-radius: 9999px;
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+        border: none;
+        background-color: transparent;
+        color: var(--text-color-muted);
+        white-space: nowrap;
+    }
+    .category-tag:hover {
+        color: var(--text-color);
+    }
+    .category-tag.active {
+        background-color: var(--primary-color);
+        color: white;
+        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+    }
+    .category-nav::-webkit-scrollbar {
+        display: none; /* Hide scrollbar for Chrome, Safari, and Opera */
+    }
+    .category-nav {
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
     }
   </style>
 </head>
@@ -164,7 +196,7 @@
     </div>
   </nav>
 
-  <main class="px-4 md:px-5 max-w-4xl mx-auto">
+  <main class="px-4 md:px-5 max-w-5xl mx-auto">
     <div id="banner" class="modern-card relative p-8 w-full mb-8">
       <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
@@ -204,13 +236,13 @@
       <span class="material-icons absolute left-4 top-1/2 transform -translate-y-1/2" style="color: var(--text-color-muted)">search</span>
     </div>
 
-    <div class="tab-content grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="api-content">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="api-content">
         <!-- API items will be injected here by script.js -->
     </div>
   </main>
 
   <div id="api-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 transition-opacity duration-300 ease-out opacity-0">
-    <div class="fixed inset-0 bg-black/50 backdrop-blur-sm transition-opacity duration-300 ease-out"></div>
+    <div class="fixed inset-0 bg-black/50 backdrop-blur-sm transition-opacity duration-300 ease-out" onclick="closeModal()"></div>
     <div class="modal-content relative z-10 shadow-2xl w-full max-w-2xl mx-auto p-8 my-auto rounded-2xl transform scale-95 opacity-0 transition-all duration-300 ease-out">
       <div class="flex justify-between items-start mb-4">
         <div class="flex items-center gap-3">
@@ -245,7 +277,6 @@
     const themeIcon = themeToggle.querySelector('.material-icons');
     const html = document.documentElement;
 
-    // Function to set theme
     const setTheme = (theme) => {
       html.classList.remove('light', 'dark');
       html.classList.add(theme);
@@ -253,32 +284,21 @@
       themeIcon.textContent = theme === 'dark' ? 'light_mode' : 'dark_mode';
     };
 
-    // Check for saved theme in localStorage or use system preference
-    const savedTheme = localStorage.getItem('theme');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const currentTheme = savedTheme || (prefersDark ? 'dark' : 'light');
-    
-    setTheme(currentTheme);
+    const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    setTheme(savedTheme);
 
-    // Toggle theme on button click
-    themeToggle.addEventListener('click', () => {
-      const newTheme = html.classList.contains('dark') ? 'light' : 'dark';
-      setTheme(newTheme);
-    });
+    themeToggle.addEventListener('click', () => setTheme(html.classList.contains('dark') ? 'light' : 'dark'));
     
     // --- LOADER SCRIPT ---
     window.addEventListener('load', () => {
         const loader = document.getElementById('page-loader');
         if(loader) {
             loader.style.opacity = '0';
-            setTimeout(() => {
-                loader.style.display = 'none';
-            }, 300);
+            setTimeout(() => loader.style.display = 'none', 300);
         }
     });
     
     // --- MODAL SCRIPT ---
-    // This script now handles the new modal classes for smooth animations
     const modal = document.getElementById('api-modal');
     const closeModalBtn = document.getElementById('close-modal');
     const modalContent = modal.querySelector('.modal-content');
@@ -299,35 +319,14 @@
         modalContent.style.transform = 'scale(0.95)';
         modalContent.style.opacity = '0';
         modalBg.style.opacity = '0';
-        setTimeout(() => {
-            modal.classList.add('hidden');
-        }, 300);
+        setTimeout(() => modal.classList.add('hidden'), 300);
     };
 
     closeModalBtn.addEventListener('click', closeModal);
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            closeModal();
-        }
-    });
-
-    // --- ORIGINAL SCRIPT LOGIC (Placeholder) ---
-    // The original script.js should be loaded AFTER this inline script.
-    // To make this fully work, you would need to adapt `script.js` slightly.
-    // Specifically, when an API item is clicked, it should call `openModal()` instead of directly manipulating modal classes.
-    // Example adaptation for your original script.js:
-    /*
-    // In your original script.js, find the part where you show the modal.
-    // Replace this:
-    //   modal.classList.remove('hidden');
-    //   ... other modal class manipulations
-    
-    // With this:
-    //   openModal(); 
-    */
   </script>
-  <!-- Load your original script file here -->
-  <script src="script.js"></script>
+  
+  <!-- Load your modernized script file here -->
+  <script src="scriptb.js"></script>
 </body>
 
 </html>
