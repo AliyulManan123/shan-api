@@ -1,14 +1,14 @@
 module.exports = {
   name: {
-    main: "Wudysoft API",
-    copyright: "Wudysoft API"
+    main: "ShanBot API",
+    copyright: "ShanBot API"
   },
   description: "Integrated API solution for your modern application development needs. Fast, secure, and reliable access.",
   icon: "/image/icon.png",
-  author: "Wudysoft",
-  info_url: "https://whatsapp.com/channel/0029Vb0v3F71yT264EejzJ3e",
+  author: "Sir Ihsan",
+  info_url: "https://chat.whatsapp.com/LfEVEurXKe209WLM6cBPwS",
   links: [{
     name: "Channel WhatsApp Inf.",
-    url: "https://whatsapp.com/channel/0029Vb0v3F71yT264EejzJ3e"
+    url: "https://chat.whatsapp.com/LfEVEurXKe209WLM6cBPwS"
   }]
 };
