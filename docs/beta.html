@@ -1,372 +1,333 @@
 <!DOCTYPE html>
-<html lang="id" class="">
+<html lang="en" class="light">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta id="api-description" name="description" content="Modern REST API Documentation">
-    <link id="api-icon" rel="icon" href="https://placehold.co/32x32/6366f1/white?text=A" type="image/png">
-    <title id="api-title">API Documentation</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta id="api-description" name="description" content="Rest Api by YoedzKey">
+  <link id="api-icon" rel="icon" href="https://www.google.com/s2/favicons?domain=yudz.dev&sz=256" type="image/png">
+  <title id="api-title">YoedzKey</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* Custom styles for a more modern look and feel */
+    :root {
+      --background-light: #f7fafc;
+      --text-light: #1a202c;
+      --card-bg-light: #ffffff;
+      --border-light: #e2e8f0;
+      --primary-light: #4c51bf;
+      --primary-hover-light: #434190;
+
+      --background-dark: #1a202c;
+      --text-dark: #e2e8f0;
+      --card-bg-dark: #2d3748;
+      --border-dark: #4a5568;
+      --primary-dark: #667eea;
+      --primary-hover-dark: #5a67d8;
+    }
+
+    html.light {
+      --bg-color: var(--background-light);
+      --text-color: var(--text-light);
+      --card-bg: var(--card-bg-light);
+      --border-color: var(--border-light);
+      --primary-color: var(--primary-light);
+      --primary-hover: var(--primary-hover-light);
+    }
+
+    html.dark {
+      --bg-color: var(--background-dark);
+      --text-color: var(--text-dark);
+      --card-bg: var(--card-bg-dark);
+      --border-color: var(--border-dark);
+      --primary-color: var(--primary-dark);
+      --primary-hover: var(--primary-hover-dark);
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .page-loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 9999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: opacity 0.3s ease-in-out;
+    }
+
+    .loader {
+      border: 4px solid rgba(0, 0, 0, 0.1);
+      border-left-color: var(--primary-color);
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .modern-card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 1rem;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      transition: all 0.3s;
+    }
+
+    .modern-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+
+    .modern-input {
+        background-color: var(--card-bg);
+        border: 1px solid var(--border-color);
+        color: var(--text-color);
+    }
+    .modern-input:focus {
+        --tw-ring-color: var(--primary-color);
+        border-color: var(--primary-color);
+    }
+
+    .modern-btn {
+        background-color: var(--primary-color);
+        color: white;
+        transition: background-color 0.3s;
+    }
+    .modern-btn:hover {
+        background-color: var(--primary-hover);
+    }
+
+    .icon-btn {
+        background-color: var(--card-bg);
+        color: var(--text-color);
+        border: 1px solid var(--border-color);
+    }
+
+    .icon-btn:hover {
+        background-color: var(--border-color);
+    }
     
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    .api-item {
+        background-color: var(--card-bg);
+        border: 1px solid var(--border-color);
+    }
+     .api-item:hover {
+        border-left-color: var(--primary-color);
+        transform: translateX(2px);
+    }
     
-    <!-- Google Fonts: Inter -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    .modal-content {
+        background-color: var(--card-bg);
+        border: 1px solid var(--border-color);
+    }
     
-    <!-- Font Awesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    
-    <script>
-        // Terapkan tema dari localStorage sebelum render biar gak kedip
-        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark');
-        } else {
-            document.documentElement.classList.remove('dark');
-        }
-    </script>
-    
-    <style>
-        /* Custom Styles */
-        html { scroll-behavior: smooth; }
-        body { font-family: 'Inter', sans-serif; }
-        .accordion-content, .try-it-out-box {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.7s cubic-bezier(0.4, 0, 0.2, 1), padding 0.5s ease;
-            padding-top: 0;
-            padding-bottom: 0;
-        }
-        .accordion-content.open, .try-it-out-box.open {
-            max-height: 10000px; /* Nilai besar buat mastiin konten muat */
-        }
-        .try-it-out-box.open {
-            padding-top: 1rem;
-            padding-bottom: 1rem;
-        }
-        /* Custom scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #e2e8f0; }
-        .dark ::-webkit-scrollbar-track { background: #1e293b; }
-        ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 10px; }
-        .dark ::-webkit-scrollbar-thumb { background: #475569; }
-        ::-webkit-scrollbar-thumb:hover { background: #64748b; }
-        
-        /* Syntax Highlighting for JSON */
-        pre code { display: block; overflow-x: auto; padding: 1.5rem; font-size: 0.875rem; border-radius: 0.5rem; }
-        .json-key { color: #93c5fd; } /* blue-300 */
-        .json-string { color: #a5b4fc; } /* indigo-300 */
-        .json-number { color: #6ee7b7; } /* emerald-300 */
-        .json-boolean { color: #f87171; } /* red-400 */
-        .json-null { color: #9ca3af; } /* gray-400 */
-    </style>
+    .response-pre {
+        background-color: var(--bg-color);
+        border: 1px solid var(--border-color);
+    }
+  </style>
 </head>
-<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 transition-colors duration-300">
 
-    <!-- Header -->
-    <header class="bg-white/80 dark:bg-slate-900/80 backdrop-blur-lg sticky top-0 z-20 border-b border-slate-200 dark:border-slate-700">
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center py-4">
-                <h1 id="header-title" class="text-2xl font-bold text-slate-900 dark:text-white">API Docs</h1>
-                <div class="flex items-center gap-4">
-                     <div class="relative hidden md:block">
-                        <input type="text" id="api-search" placeholder="Cari endpoint..." class="w-full pl-4 pr-10 py-2 rounded-full bg-slate-100 dark:bg-slate-800 border-transparent focus:bg-white dark:focus:bg-slate-900 focus:border-indigo-500 focus:ring-indigo-500 transition">
-                        <i class="fa-solid fa-search absolute right-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
-                    </div>
-                    <button id="theme-toggle-button" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
-                        <i class="fa-solid fa-sun text-slate-600 dark:text-slate-300" id="theme-icon-light"></i>
-                        <i class="fa-solid fa-moon text-slate-600 dark:text-slate-300 hidden" id="theme-icon-dark"></i>
-                    </button>
-                </div>
-            </div>
+<body class="min-h-screen pt-24 pb-10">
+  <div id="page-loader" class="page-loader" style="background-color: var(--bg-color);">
+    <div class="loader"></div>
+  </div>
+
+  <nav class="py-4 px-6 md:px-10 w-full fixed top-0 z-20 backdrop-blur-md border-b" style="border-color: var(--border-color); background-color: rgba(255,255,255,0.1)">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+        <div class="flex items-center gap-3">
+            <img id="nav-icon" src="https://www.google.com/s2/favicons?domain=yudz.dev&sz=256" class="h-8 w-8 rounded-full" alt="API Icon">
+            <h1 id="nav-title" class="text-xl font-bold tracking-tight">YoedzKey</h1>
         </div>
-    </header>
-
-    <!-- Main Content -->
-    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        
-        <!-- Hero Section -->
-        <section class="mb-12 text-center">
-            <h2 id="api-name" class="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-3">API Name</h2>
-            <p id="api-author" class="text-slate-600 dark:text-slate-400 mb-4">by Author</p>
-            <p id="api-desc" class="max-w-2xl mx-auto text-slate-500 dark:text-slate-400 mb-6">API Description</p>
-            <div id="api-links" class="flex justify-center items-center gap-x-6 gap-y-2 flex-wrap">
-                <!-- Links dinamis dari /set -->
-            </div>
-        </section>
-
-        <!-- API Key Input -->
-        <div class="mb-8 p-4 bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700">
-            <label for="api-key-input" class="block text-sm font-medium text-slate-600 dark:text-slate-300 mb-2">Global API Key</label>
-            <input type="text" id="api-key-input" placeholder="Masukkan API Key di sini..." class="w-full px-4 py-2 bg-slate-100 dark:bg-slate-700 border-transparent rounded-md focus:border-indigo-500 focus:ring-indigo-500 transition">
+        <div class="flex items-center gap-2">
+            <button id="theme-toggle" class="p-2 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[--bg-color] focus:ring-[--primary-color]">
+                <span class="material-icons align-middle"></span>
+            </button>
         </div>
+    </div>
+  </nav>
 
-        <!-- Endpoints List -->
-        <div id="endpoint-container" class="space-y-6">
-            <!-- Konten dinamis dari /endpoints -->
-        </div>
-    </main>
-
-    <!-- Footer -->
-    <footer class="text-center py-6 mt-8 border-t border-slate-200 dark:border-slate-700">
-        <p id="api-copyright" class="text-slate-500 dark:text-slate-400 text-sm">© 2025 API Name. All rights reserved.</p>
-    </footer>
-
-    <!-- Toast Notification -->
-    <div id="toast" class="fixed bottom-5 right-5 bg-slate-900 text-white py-2 px-5 rounded-lg shadow-xl transition-all duration-300 opacity-0 transform translate-y-4">
-        <p id="toast-message"></p>
+  <main class="px-4 md:px-5 max-w-4xl mx-auto">
+    <div id="banner" class="modern-card relative p-8 w-full mb-8">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div>
+              <div class="flex flex-wrap items-center gap-3 mb-2">
+                <h2 id="api-name" class="text-4xl font-bold">Name</h2>
+                <div id="api-author" class="bg-indigo-100 text-indigo-800 text-sm font-semibold px-3 py-1 rounded-full shrink-0 dark:bg-indigo-900 dark:text-indigo-200">by Who.</div>
+              </div>
+              <p id="api-desc" class="text-sm mb-4 max-w-2xl" style="color: var(--text-color-muted)">Desc</p>
+              <div id="api-links" class="flex flex-wrap gap-x-4 gap-y-2 text-sm"></div>
+          </div>
+          <div class="flex flex-row md:flex-col gap-3 shrink-0">
+             <a id="api-info" target="_blank" class="icon-btn p-3 rounded-full transition-all duration-300" title="Info">
+                <span class="material-icons text-gray-600 dark:text-gray-300 align-middle">info</span>
+             </a>
+             <a href="/docs/obfus.html" target="_blank" class="icon-btn p-3 rounded-full transition-all duration-300" title="JavaScript Obfuscator">
+                <span class="material-icons text-gray-600 dark:text-gray-300 align-middle">code</span>
+             </a>
+             <a href="https://share.xczevo.my.id" target="_blank" class="icon-btn p-3 rounded-full transition-all duration-300" title="Share Code">
+                <span class="material-icons text-gray-600 dark:text-gray-300 align-middle">share</span>
+             </a>
+             <a href="https://youtube.yudzdevz.biz.id/" target="_blank" class="icon-btn p-3 rounded-full transition-all duration-300" title="Download YouTube Video/Audio">
+                <span class="material-icons text-gray-600 dark:text-gray-300 align-middle">download</span>
+             </a>
+          </div>
+      </div>
+      <div class="mt-6 pt-4 border-t flex justify-between items-center" style="border-color: var(--border-color)">
+        <span id="api-copyright" class="text-xs" style="color: var(--text-color-muted)">© 2025 Name. All rights reserved.</span>
+        <a href="https://github.com/shinzxyz" target="_blank" class="flex items-center text-xs hover:text-[--primary-color] transition-colors" style="color: var(--text-color-muted)">
+          <i class="fab fa-github mr-2"></i>
+          <span class="font-medium">Github</span>
+        </a>
+      </div>
     </div>
 
-    <script>
-    document.addEventListener("DOMContentLoaded", async function() {
-        // --- STATE & ELEMENTS ---
-        let apiKey = localStorage.getItem('apiKey') || '';
-        const apiKeyInput = document.getElementById('api-key-input');
-        apiKeyInput.value = apiKey;
+    <div class="relative w-full mb-8">
+      <input type="text" id="api-search" class="modern-input w-full px-5 py-3 text-sm rounded-full focus:outline-none focus:ring-2 pl-12" placeholder="Search for an API...">
+      <span class="material-icons absolute left-4 top-1/2 transform -translate-y-1/2" style="color: var(--text-color-muted)">search</span>
+    </div>
 
-        // --- INITIAL SETUP ---
-        try {
-            const [endpoints, settings] = await Promise.all([
-                fetch("/endpoints").then(res => res.json()),
-                fetch("/set").then(res => res.json())
-            ]);
-            
-            setupPageInfo(settings);
-            populateEndpoints(endpoints);
-            setupSearch(endpoints);
+    <div class="tab-content grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="api-content">
+        <!-- API items will be injected here by script.js -->
+    </div>
+  </main>
 
-        } catch (error) {
-            console.error("Error loading initial configuration:", error);
-            showToast("Gagal memuat konfigurasi API.");
-        }
+  <div id="api-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 transition-opacity duration-300 ease-out opacity-0">
+    <div class="fixed inset-0 bg-black/50 backdrop-blur-sm transition-opacity duration-300 ease-out"></div>
+    <div class="modal-content relative z-10 shadow-2xl w-full max-w-2xl mx-auto p-8 my-auto rounded-2xl transform scale-95 opacity-0 transition-all duration-300 ease-out">
+      <div class="flex justify-between items-start mb-4">
+        <div class="flex items-center gap-3">
+          <span id="api-method" class="px-3 py-1 text-sm font-bold rounded-md mr-2">GET</span>
+          <h3 class="text-2xl font-bold" id="modal-title">API Request</h3>
+        </div>
+        <button id="close-modal" class="text-gray-500 hover:text-red-500 focus:outline-none transition-colors p-2 -mr-2 -mt-2 rounded-full">
+          <span class="material-icons">close</span>
+        </button>
+      </div>
+      <div class="mb-6">
+        <p id="modal-api-description" class="text-sm" style="color: var(--text-color-muted)">API description will appear here</p>
+      </div>
+      <div id="params-container" class="mb-6 space-y-4"></div>
+      <button id="submit-api" class="modern-btn w-full px-4 py-3 text-sm font-bold rounded-lg transition duration-300">Send Request</button>
+      <div id="response-container" class="mt-6 hidden">
+        <div class="flex items-center justify-between mb-3">
+          <h4 class="text-lg font-semibold">Response</h4>
+          <div class="flex items-center gap-3">
+            <span id="response-status" class="px-3 py-1 text-xs font-medium rounded-full">200</span>
+            <span id="response-time" class="text-xs" style="color: var(--text-color-muted)">200ms</span>
+          </div>
+        </div>
+        <pre id="response-data" class="response-pre p-4 text-xs overflow-auto max-h-72 rounded-lg"></pre>
+      </div>
+    </div>
+  </div>
 
-        // --- FUNCTIONS ---
+  <script>
+    // --- THEME TOGGLE SCRIPT ---
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeIcon = themeToggle.querySelector('.material-icons');
+    const html = document.documentElement;
 
-        function setupPageInfo(set) {
-            // Helper
-            const setContent = (selector, property, value) => {
-                const element = document.querySelector(selector);
-                if (element) element[property] = value;
-            };
-            
-            // Set general page info
-            setContent("#api-icon", "href", set.icon);
-            setContent("#api-title", "textContent", set.name.main);
-            setContent("#header-title", "textContent", set.name.main);
-            setContent("meta[name='description']", "content", set.description);
-            setContent("#api-name", "textContent", set.name.main);
-            setContent("#api-author", "textContent", `by ${set.author}`);
-            setContent("#api-desc", "textContent", set.description);
-            setContent("#api-copyright", "textContent", `© ${new Date().getFullYear()} ${set.name.copyright}. All rights reserved.`);
+    // Function to set theme
+    const setTheme = (theme) => {
+      html.classList.remove('light', 'dark');
+      html.classList.add(theme);
+      localStorage.setItem('theme', theme);
+      themeIcon.textContent = theme === 'dark' ? 'light_mode' : 'dark_mode';
+    };
 
-            // Set dynamic links
-            const linksContainer = document.getElementById("api-links");
-            linksContainer.innerHTML = "";
-            if (set.links?.length) {
-                set.links.forEach(link => {
-                    linksContainer.innerHTML += `
-                        <a href="${link.url}" target="_blank" class="text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:underline">${link.name}</a>
-                    `;
-                });
-            }
-        }
+    // Check for saved theme in localStorage or use system preference
+    const savedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const currentTheme = savedTheme || (prefersDark ? 'dark' : 'light');
+    
+    setTheme(currentTheme);
 
-        function populateEndpoints(data) {
-            const container = document.getElementById("endpoint-container");
-            container.innerHTML = ""; // Clear container
-
-            data.endpoints.forEach(category => {
-                const categoryId = category.name.replace(/\s+/g, '-').toLowerCase();
-                
-                const categoryAccordion = document.createElement('div');
-                categoryAccordion.className = "bg-white dark:bg-slate-800 rounded-xl shadow-md overflow-hidden";
-                categoryAccordion.dataset.category = category.name;
-
-                let itemsHtml = '';
-                const sortedItems = Object.entries(category.items).sort((a, b) => a[0].localeCompare(b[0]));
-
-                sortedItems.forEach(([itemName, itemData]) => {
-                    const path = itemData.path || '';
-                    const params = path.match(/{([^}]+)}/g)?.map(p => p.slice(1, -1)) || [];
-                    
-                    let paramsHtml = '';
-                    if (params.length > 0) {
-                        params.forEach(param => {
-                            paramsHtml += `
-                                <div class="grid grid-cols-1 md:grid-cols-3 gap-2 items-center">
-                                    <label class="text-sm font-medium text-slate-500 dark:text-slate-400">${param}</label>
-                                    <input type="text" name="${param}" class="param-input-field md:col-span-2 bg-white dark:bg-slate-700 w-full rounded-md border-slate-300 dark:border-slate-600 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2" placeholder="Masukkan nilai untuk ${param}">
-                                </div>
-                            `;
-                        });
-                    } else {
-                        paramsHtml = `<p class="text-xs text-slate-400 dark:text-slate-500">Endpoint ini tidak memerlukan parameter tambahan.</p>`;
-                    }
-
-                    itemsHtml += `
-                        <div class="endpoint-card border-t border-slate-200 dark:border-slate-700 p-4" data-name="${itemName}" data-desc="${itemData.desc || ''}">
-                            <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-2 mb-3">
-                                <div>
-                                    <p class="font-semibold text-slate-800 dark:text-slate-100">${itemName}</p>
-                                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">${itemData.desc}</p>
-                                </div>
-                                <div class="flex items-center gap-2">
-                                    <span class="font-mono text-xs text-indigo-700 bg-indigo-100 dark:text-indigo-300 dark:bg-indigo-900/50 px-2 py-1 rounded">${itemData.path}</span>
-                                    <button class="try-it-btn w-24 text-sm bg-indigo-100 text-indigo-700 dark:bg-indigo-900/50 dark:text-indigo-300 font-semibold py-2 px-4 rounded-lg hover:bg-indigo-200 dark:hover:bg-indigo-900 transition-all duration-200">
-                                        Try it out
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="try-it-out-box border-t border-slate-200 dark:border-slate-700">
-                                <div class="space-y-4 mb-4">
-                                    <h4 class="text-sm font-semibold mt-4">Parameters</h4>
-                                    ${paramsHtml}
-                                </div>
-                                <button class="send-request-btn w-full bg-indigo-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200">
-                                    <i class="fa-solid fa-paper-plane mr-2"></i>Send Request
-                                </button>
-                                <div class="response-container mt-4 hidden">
-                                    <h4 class="text-sm font-semibold mb-2">Response</h4>
-                                    <pre class="bg-slate-800 text-slate-50 dark:bg-slate-950"><code class="response-content language-json"></code></pre>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                });
-
-                categoryAccordion.innerHTML = `
-                    <button class="accordion-trigger w-full flex justify-between items-center p-5 text-left">
-                        <div>
-                            <h3 class="text-xl font-bold text-slate-800 dark:text-slate-100">${category.name}</h3>
-                            <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">${sortedItems.length} endpoint</p>
-                        </div>
-                        <i class="fa-solid fa-chevron-down transition-transform duration-300 text-slate-500"></i>
-                    </button>
-                    <div class="accordion-content">
-                        ${itemsHtml}
-                    </div>
-                `;
-                container.appendChild(categoryAccordion);
-            });
-            
-            addEventListeners();
-        }
-        
-        function addEventListeners() {
-            document.querySelectorAll('.accordion-trigger').forEach(button => {
-                button.addEventListener('click', () => {
-                    const content = button.nextElementSibling;
-                    button.querySelector('i').classList.toggle('rotate-180');
-                    content.classList.toggle('open');
-                });
-            });
-
-            document.querySelectorAll('.try-it-btn').forEach(button => {
-                button.addEventListener('click', () => {
-                    const box = button.closest('.endpoint-card').querySelector('.try-it-out-box');
-                    box.classList.toggle('open');
-                });
-            });
-
-            document.querySelectorAll('.send-request-btn').forEach(button => {
-                button.addEventListener('click', testApi);
-            });
-        }
-
-        async function testApi(event) {
-            const buttonEl = event.target;
-            const card = buttonEl.closest('.endpoint-card');
-            let path = card.querySelector('.font-mono').textContent;
-            const responseContainer = card.querySelector('.response-container');
-            const responseEl = card.querySelector('.response-content');
-            
-            const paramInputs = card.querySelectorAll('.param-input-field');
-            const params = new URLSearchParams();
-            
-            paramInputs.forEach(input => {
-                if (input.value) {
-                    // Ganti placeholder di path
-                    path = path.replace(`{${input.name}}`, encodeURIComponent(input.value));
-                }
-            });
-            
-            // Tambahkan apikey sebagai query param
-            params.append('apikey', apiKey);
-
-            responseContainer.classList.remove('hidden');
-            responseEl.innerHTML = syntaxHighlight({ message: "Loading..." });
-            buttonEl.disabled = true;
-            buttonEl.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i>Sending...';
-
-            try {
-                const fullUrl = `${path}?${params.toString()}`;
-                const response = await fetch(fullUrl);
-                
-                const contentType = response.headers.get("content-type");
-                if (!response.ok || !contentType || !contentType.includes("application/json")) {
-                     const errorText = await response.text();
-                     throw new Error(`Server response not JSON. Status: ${response.status}. Response: ${errorText.substring(0, 100)}...`);
-                }
-
-                const data = await response.json();
-                responseEl.innerHTML = syntaxHighlight(data);
-
-            } catch (error) {
-                console.error("Error fetching API:", error);
-                const errorData = { error: true, message: error.message };
-                responseEl.innerHTML = syntaxHighlight(errorData);
-            } finally {
-                buttonEl.disabled = false;
-                buttonEl.innerHTML = '<i class="fa-solid fa-paper-plane mr-2"></i>Send Request';
-            }
-        }
-        
-        function setupSearch(data) {
-            const searchInput = document.getElementById('api-search');
-            searchInput.addEventListener('input', (e) => {
-                const query = e.target.value.toLowerCase();
-                document.querySelectorAll('.endpoint-card').forEach(card => {
-                    const name = card.dataset.name.toLowerCase();
-                    const desc = card.dataset.desc.toLowerCase();
-                    card.style.display = (name.includes(query) || desc.includes(query)) ? 'block' : 'none';
-                });
-                document.querySelectorAll('[data-category]').forEach(categoryEl => {
-                    const visibleCards = Array.from(categoryEl.querySelectorAll('.endpoint-card')).filter(card => card.style.display !== 'none');
-                    categoryEl.style.display = (visibleCards.length > 0) ? 'block' : 'none';
-                });
-            });
-        }
-
-        function showToast(message) {
-            const toast = document.getElementById('toast');
-            toast.innerText = message;
-            toast.classList.remove('opacity-0', 'translate-y-4');
-            setTimeout(() => {
-                toast.classList.add('opacity-0', 'translate-y-4');
-            }, 2500);
-        }
-
-        // --- THEME TOGGLE ---
-        const themeToggleButton = document.getElementById('theme-toggle-button');
-        const updateThemeIcons = (isDark) => {
-            document.getElementById('theme-icon-light').classList.toggle('hidden', isDark);
-            document.getElementById('theme-icon-dark').classList.toggle('hidden', !isDark);
-        };
-        themeToggleButton.addEventListener('click', (e) => {
-            e.preventDefault();
-            const isDark = document.documentElement.classList.toggle('dark');
-            localStorage.setItem('theme', isDark ? 'dark' : 'light');
-            updateThemeIcons(isDark);
-        });
-        updateThemeIcons(document.documentElement.classList.contains('dark'));
-        
-        // --- API KEY HANDLING ---
-        apiKeyInput.addEventListener('input', (e) => {
-            apiKey = e.target.value;
-            localStorage.setItem('apiKey', apiKey);
-        });
+    // Toggle theme on button click
+    themeToggle.addEventListener('click', () => {
+      const newTheme = html.classList.contains('dark') ? 'light' : 'dark';
+      setTheme(newTheme);
     });
-    </script>
+    
+    // --- LOADER SCRIPT ---
+    window.addEventListener('load', () => {
+        const loader = document.getElementById('page-loader');
+        if(loader) {
+            loader.style.opacity = '0';
+            setTimeout(() => {
+                loader.style.display = 'none';
+            }, 300);
+        }
+    });
+    
+    // --- MODAL SCRIPT ---
+    // This script now handles the new modal classes for smooth animations
+    const modal = document.getElementById('api-modal');
+    const closeModalBtn = document.getElementById('close-modal');
+    const modalContent = modal.querySelector('.modal-content');
+    const modalBg = modal.querySelector('.bg-black\\/50');
+
+    const openModal = () => {
+        modal.classList.remove('hidden');
+        setTimeout(() => {
+            modal.style.opacity = '1';
+            modalContent.style.transform = 'scale(1)';
+            modalContent.style.opacity = '1';
+            modalBg.style.opacity = '1';
+        }, 10);
+    };
+
+    const closeModal = () => {
+        modal.style.opacity = '0';
+        modalContent.style.transform = 'scale(0.95)';
+        modalContent.style.opacity = '0';
+        modalBg.style.opacity = '0';
+        setTimeout(() => {
+            modal.classList.add('hidden');
+        }, 300);
+    };
+
+    closeModalBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            closeModal();
+        }
+    });
+
+    // --- ORIGINAL SCRIPT LOGIC (Placeholder) ---
+    // The original script.js should be loaded AFTER this inline script.
+    // To make this fully work, you would need to adapt `script.js` slightly.
+    // Specifically, when an API item is clicked, it should call `openModal()` instead of directly manipulating modal classes.
+    // Example adaptation for your original script.js:
+    /*
+    // In your original script.js, find the part where you show the modal.
+    // Replace this:
+    //   modal.classList.remove('hidden');
+    //   ... other modal class manipulations
+    
+    // With this:
+    //   openModal(); 
+    */
+  </script>
+  <!-- Load your original script file here -->
+  <script src="script.js"></script>
 </body>
+
 </html>
