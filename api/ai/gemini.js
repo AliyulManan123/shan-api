@@ -20,7 +20,7 @@ module.exports = {
     // Kategori untuk pengelompokan di dokumentasi
     category: "AI",
     // Parameter yang diperlukan oleh endpoint
-    params: ["text", "model", "logic"],
+    params: ["text", "logic"],
 
     /**
      * Fungsi utama yang akan dijalankan saat endpoint diakses.
@@ -30,7 +30,7 @@ module.exports = {
     async run(req, res) {
         // Ambil parameter dari query URL
         const text = req.query.text;
-        const model = req.query.model || 'gemini-pro'; // Model default: gemini-pro
+        const model = req.query.model || 'gemini-2.5-pro'; // Model default: gemini-pro
         const logic = req.query.logic; // Ambil instruksi sistem kustom
 
         // Validasi: Cek apakah parameter 'text' ada
