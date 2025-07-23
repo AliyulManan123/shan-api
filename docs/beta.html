@@ -4,13 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shan-API - Modern Interface</title>
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <script>
         // Script ini penting buat nerapin tema dari localStorage SEBELUM halaman render, biar gak kedip-kedip
@@ -53,7 +50,6 @@
 </head>
 <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200 transition-colors duration-300">
 
-    <!-- Header -->
     <header class="bg-white/80 dark:bg-slate-900/80 backdrop-blur-lg sticky top-0 z-20 border-b border-slate-200 dark:border-slate-700">
         <div class="container mx-auto px-4">
             <div class="flex justify-between items-center py-4">
@@ -88,19 +84,15 @@
         </div>
     </header>
 
-    <!-- Main Content -->
     <main class="container mx-auto px-4 py-8">
         <div id="endpoint-container" class="space-y-6">
-            <!-- Endpoints akan di-generate oleh JavaScript di sini -->
-        </div>
+            </div>
     </main>
 
-    <!-- Footer -->
     <footer class="text-center py-6 mt-8 border-t border-slate-200 dark:border-slate-700">
         <p class="text-slate-500 dark:text-slate-400">Dibuat dengan <i class="fa-solid fa-heart text-red-500"></i> oleh WudySoft & direvamp oleh Gemini.</p>
     </footer>
 
-    <!-- API Key Modal -->
     <div id="api-key-modal" class="hidden fixed inset-0 z-40">
         <div class="modal-backdrop absolute inset-0 bg-black bg-opacity-50" onclick="apiKeyModal.classList.add('hidden')"></div>
         <div class="modal-box relative w-full max-w-md p-6 bg-white dark:bg-slate-800 rounded-xl shadow-2xl top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
@@ -116,7 +108,6 @@
         </div>
     </div>
 
-    <!-- Toast Notification -->
     <div id="toast" class="fixed bottom-5 right-5 bg-slate-900 text-white py-2 px-5 rounded-lg shadow-xl transition-all duration-300 opacity-0 transform translate-y-4">
         <p id="toast-message"></p>
     </div>
@@ -374,11 +365,31 @@
 
             try {
                 const response = await fetch(fullUrl);
+
+                // --- START PERBAIKAN ---
+                const contentType = response.headers.get("content-type");
+                if (!response.ok || !contentType || !contentType.includes("application/json")) {
+                    const errorText = await response.text();
+                    let errorMessage = `Server tidak merespon dengan JSON. Status: ${response.status}.`;
+                    
+                    // Coba cari judul dari HTML yang diterima
+                    const titleMatch = errorText.match(/<title>(.*?)<\/title>/);
+                    if (titleMatch && titleMatch[1]) {
+                        errorMessage += ` Respon yang diterima adalah halaman HTML dengan judul: "${titleMatch[1]}"`;
+                    } else {
+                         errorMessage += ` Respon yang diterima sepertinya adalah halaman HTML, bukan data JSON.`;
+                    }
+                    
+                    throw new Error(errorMessage);
+                }
+                // --- AKHIR PERBAIKAN ---
+
                 const data = await response.json();
                 responseEl.innerHTML = syntaxHighlight(data);
+
             } catch (error) {
                 console.error("Error fetching API:", error);
-                const errorData = { error: true, message: "Gagal fetch API. Cek console browser.", details: error.message };
+                const errorData = { error: true, message: error.message, details: "Cek console browser & pastikan konfigurasi routing di Vercel sudah benar untuk path /api/." };
                 responseEl.innerHTML = syntaxHighlight(errorData);
             } finally {
                 loadingEl.classList.add('hidden');
