@@ -8,7 +8,7 @@ module.exports = {
   author: "Sir Ihsan",
   info_url: "https://chat.whatsapp.com/LfEVEurXKe209WLM6cBPwS",
   links: [{
-    name: "Channel WhatsApp Inf.",
+    name: "Group WhatsApp Inf.",
     url: "https://chat.whatsapp.com/LfEVEurXKe209WLM6cBPwS"
   }]
 };
