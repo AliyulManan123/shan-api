@@ -90,12 +90,13 @@ module.exports = {
                     author: "San"
                 });
             }
+             const cleanedText = generatedText.replace(/\*/g, '');
 
             // Kirim respons sukses dalam format JSON
             res.json({
                 status: true,
                 model: model,
-                response: generatedText,
+                response: cleanedText,
                 author: "San"
             });
 
