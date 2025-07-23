@@ -3,6 +3,7 @@ module.exports = {
     main: "ShanBot API",
     copyright: "ShanBot API"
   },
+  gemini_key: "AIzaSyASVO1MJ9hYcK1aihNgYzMU5leQ61IobNM",
   description: "Integrated API solution for your modern application development needs. Fast, secure, and reliable access.",
   icon: "/image/icon.png",
   author: "Sir Ihsan",
